@@ -1,0 +1,87 @@
+[project]
+name = "gpu-connected-components"
+version = "0.1.0"
+description = "Benchmarking connected component labeling libraries (CPU and GPU)"
+readme = "README.md"
+requires-python = ">=3.9,<3.13"
+license = { text = "MIT" }
+authors = [
+    { name = "aymuos15" }
+]
+keywords = ["connected-components", "gpu", "benchmark", "image-processing"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Image Processing",
+]
+
+# Base CPU dependencies (native 3D only)
+dependencies = [
+    "numpy>=1.21.0,<3.0.0",
+    "matplotlib>=3.5.0",
+    "scikit-image>=0.19.0",
+    "connected-components-3d>=3.12.0",
+    "SimpleITK>=2.1.0",
+    "mahotas>=1.4.0",
+    "diplib>=3.3.0",
+]
+
+[project.optional-dependencies]
+# GPU support - CUDA 12.x
+gpu-cuda12 = [
+    "torch>=2.0.0",
+    "cupy-cuda12x>=12.0.0",
+    "cucim>=23.0.0",
+    "kornia>=0.7.0",
+]
+# GPU support - CUDA 11.x
+gpu-cuda11 = [
+    "torch>=2.0.0",
+    "cupy-cuda11x>=12.0.0",
+    "cucim>=23.0.0",
+    "kornia>=0.7.0",
+]
+# Development
+dev = [
+    "pytest>=7.0.0",
+    "pytest-benchmark>=4.0.0",
+]
+
+[project.scripts]
+benchmark-cc = "gpu_cc.benchmark:main"
+
+[project.urls]
+Homepage = "https://github.com/aymuos15/GPU-Connected-Components"
+Repository = "https://github.com/aymuos15/GPU-Connected-Components"
+Issues = "https://github.com/aymuos15/GPU-Connected-Components/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gpu_cc"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/gpu_cc",
+    "plots",
+    "README.md",
+    "pyproject.toml",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-benchmark>=4.0.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
