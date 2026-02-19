@@ -3,6 +3,7 @@
 import pytest
 import numpy as np
 import torch
+import cupy as cp
 from gpu_cc.benchmark import (
     create_matrix,
     torch_cc,
@@ -96,7 +97,8 @@ class TestBenchmarkFunctions:
     def test_cupy_ndimage_cc_returns_array(self, test_matrix):
         """Test cupy_ndimage_cc returns expected type."""
         try:
-            result = cupy_ndimage_cc(test_matrix)
+            matrix_cp = cp.asarray(test_matrix)
+            result = cupy_ndimage_cc(matrix_cp)
             assert result.shape == test_matrix.shape
         except Exception:
             pytest.skip("CuPy not available or CUDA unavailable")
@@ -104,7 +106,8 @@ class TestBenchmarkFunctions:
     def test_cucim_cc_returns_array(self, test_matrix):
         """Test cucim_cc returns expected type."""
         try:
-            result = cucim_cc(test_matrix)
+            matrix_cp = cp.asarray(test_matrix)
+            result = cucim_cc(matrix_cp)
             assert result.shape == test_matrix.shape
         except Exception:
             pytest.skip("cuCIM not available or CUDA unavailable")
